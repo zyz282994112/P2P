@@ -1,5 +1,5 @@
-function f=ClosedSolution(S,y,lamada,afa)
-%%论文计算f的闭式解实现
+锘縡unction f=ClosedSolution(S,y,lamada,afa)
+%%璁烘枃璁＄畻f鐨勯棴寮忚В瀹炵幇
 num=length(afa);
 I=cell(num,1);
 A=[];B=[];
