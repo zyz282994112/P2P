@@ -1,15 +1,18 @@
-classdef HoldoutValidateModel < ValidateModel
+classdef HoldoutValidateModel < ValidatePackage.ValidateModel
     properties  
-        lamada=0.5;
+        lamada;
     end
     methods  
         function obj=HoldoutValidateModel(ValidateName)
-            obj=obj@ValidateModel(ValidateName);
+            obj=obj@ValidatePackage.ValidateModel(ValidateName);
         end
         
         function evalarray=Run(obj,dataobj,classify,evalarray,m)
             traintag=cell(length(dataobj.DataLabel),1);
             testtag=cell(length(dataobj.DataLabel),1);
+            if isempty(obj.lamada)
+                obj.lamada=0.5*ones(length(dataobj.DataLabel),1);
+            end
             for i=1:length(dataobj.DataLabel)
                 switch obj.lamada(i)
                     case 1

@@ -25,8 +25,7 @@ classdef ValidateModel < handle
                     fid=[resultpath,'.xml'];
                     c=fopen(fid,obj.WriteMode);
                 otherwise
-                    disp('input error!');
-                    return;
+                    error('input error!');
             end
             
             fprintf(c,'<OneTest>\n');
@@ -49,8 +48,20 @@ objclass=objclass.PropertyList;
 fprintf(c,'<%s>\n',Name);
 for i=1:length(objclass)
     if objclass(i).Hidden==0
-        disp([objclass(i).Name,' : ',num2str(obj.(objclass(i).Name))]);
-        fprintf(c,'<%s>%s</%s>\n',objclass(i).Name,num2str(obj.(objclass(i).Name)),objclass(i).Name);
+        if  isnumeric(obj.(objclass(i).Name)) && length(obj.(objclass(i).Name))>1 
+            fprintf(c,'<%s>\n',objclass(i).Name);
+            tmp=obj.(objclass(i).Name);
+            for k1=1:size(tmp,1)
+                for k2=1:size(tmp,2)
+                    disp([objclass(i).Name,'(',num2str(k1),',',num2str(k2),') : ',num2str(tmp(k1,k2))]);
+                    fprintf(c,'<%s(%d,%d)>%s</%s(%d,%d)>\n',objclass(i).Name,k1,k2,num2str(tmp(k1,k2)),objclass(i).Name,k1,k2);
+                end
+            end
+            fprintf(c,'</%s>\n',objclass(i).Name);
+        else        
+            disp([objclass(i).Name,' : ',num2str(obj.(objclass(i).Name))]);
+            fprintf(c,'<%s>%s</%s>\n',objclass(i).Name,num2str(obj.(objclass(i).Name)),objclass(i).Name);
+        end
     end
 end
 fprintf(c,'</%s>\n',Name);

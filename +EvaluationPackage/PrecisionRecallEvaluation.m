@@ -1,4 +1,4 @@
-classdef PrecisionRecallEvaluation < Evaluation
+classdef PrecisionRecallEvaluation < EvaluationPackage.Evaluation
     %%评价分类结果
     properties  %%定义类变量
         Precision;
@@ -7,7 +7,7 @@ classdef PrecisionRecallEvaluation < Evaluation
     
     methods   %定义类方法
         function obj=PrecisionRecallEvaluation(EvaluationName)
-            obj=obj@Evaluation(EvaluationName);
+            obj=obj@EvaluationPackage.Evaluation(EvaluationName);
         end
         
         function obj=Run(obj,truevector,precisionvector)

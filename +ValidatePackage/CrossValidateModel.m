@@ -1,10 +1,10 @@
-classdef CrossValidateModel < ValidateModel
+classdef CrossValidateModel < ValidatePackage.ValidateModel
     properties
         k=10;
     end
     methods
         function obj=CrossValidateModel(ValidateName)
-            obj=obj@ValidateModel(ValidateName);
+            obj=obj@ValidatePackage.ValidateModel(ValidateName);
         end
         
         function evalarray=Run(obj,dataobj,classify,evalarray,m)
@@ -40,12 +40,12 @@ classdef CrossValidateModel < ValidateModel
                     end
                 end
                 objclass=metaclass(evalarray{j});
-                    objclass=objclass.PropertyList;
-                    for t=1:length(objclass)
-                        if objclass(t).Hidden==0 && isnumeric(result{j,i}.(objclass(t).Name))
-                            evalarray{j}.(objclass(t).Name)=evalarray{j}.(objclass(t).Name)/obj.k;
-                        end
+                objclass=objclass.PropertyList;
+                for t=1:length(objclass)
+                    if objclass(t).Hidden==0 && isnumeric(result{j,i}.(objclass(t).Name))
+                        evalarray{j}.(objclass(t).Name)=evalarray{j}.(objclass(t).Name)/obj.k;
                     end
+                end
             end
             
         end

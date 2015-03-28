@@ -1,4 +1,4 @@
-classdef AUCEvaluation < Evaluation
+classdef AUCEvaluation < EvaluationPackage.Evaluation
     %%评价分类结果
     properties  %%定义类变量
         AUC;
@@ -7,7 +7,7 @@ classdef AUCEvaluation < Evaluation
     
     methods   %定义类方法
         function obj=AUCEvaluation(EvaluationName)
-            obj=obj@Evaluation(EvaluationName);
+            obj=obj@EvaluationPackage.Evaluation(EvaluationName);
         end
         
         function obj=Run(obj,truevector,precisionvector)

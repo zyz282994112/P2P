@@ -1,4 +1,4 @@
-classdef  SVM < Classifier
+classdef  SVM < ClassifierPackage.Classifier
     properties  %%定义类变量
         s=0;
         t=2;
@@ -8,7 +8,7 @@ classdef  SVM < Classifier
     
    methods   %定义类方法
       function obj = SVM(ClassifyName)
-           obj=obj@Classifier(ClassifyName);
+           obj=obj@ClassifierPackage.Classifier(ClassifyName);
       end
       
       function PredictionLabel=Run(obj,dataobj,TrainTag,TestTag,m)
