@@ -1,4 +1,4 @@
-classdef Evaluation < handle&matlab.mixin.Copyable
+classdef Evaluation 
     %%评价分类结果
     properties  %%定义类变量
         EvaluationName;

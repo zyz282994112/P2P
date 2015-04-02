@@ -1,4 +1,4 @@
-function f=ClosedSolution(S,y,lamada,afa)
+function f=ClosedSolution(~,S,y,lamada,afa)
 %%论文计算f的闭式解实现
 num=length(afa);
 I=cell(num,1);

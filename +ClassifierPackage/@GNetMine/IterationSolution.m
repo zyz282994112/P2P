@@ -1,4 +1,4 @@
-function f=IterationSolution(S,y,lamada,afa)
+function f=IterationSolution(~,S,y,lamada,afa)
 %%论文计算f的迭代解实现
 f=y;
 for t=1:3000

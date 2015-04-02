@@ -7,9 +7,9 @@ classdef CrossValidateModel < ValidatePackage.ValidateModel
             obj=obj@ValidatePackage.ValidateModel(ValidateName);
         end
         
-        function evalarray=Run(obj,dataobj,classify,evalarray)
-            m=dataobj.TargetDataSet;
+        function evalarray=Run(obj,dataobj,classify,evalarray,m)
             indices=cell(length(dataobj.DataLabel),1);
+            length(indices)
             for i=1:length(indices)
                 indices{i} = crossvalind('Kfold',dataobj.DataLabel{i},obj.k);
             end
@@ -20,12 +20,10 @@ classdef CrossValidateModel < ValidatePackage.ValidateModel
                 for j=1:length(indices)
                     testtag{j} = (indices{j} == i); traintag{j} = ~testtag{j};
                 end
-                PredictionLabel=classify.Run(dataobj,traintag,testtag);
-                %                 [truedata,predictiondata]=obj.ClearUnlabeldData(dataobj.DataLabel{m}(testtag{m}==1),PredictionLabel);
+                PredictionLabel=classify.Run(dataobj,traintag,testtag,m);
+                [truedata,predictiondata]=obj.ClearuUnlabeldData(dataobj.DataLabel{m}(testtag{m}==1),PredictionLabel);
                 for j=1:length(evalarray)
-                    %                     result{j,i}=evalarray{j}.Run(truedata,predictiondata);
-                    evalarray{j}.Run(dataobj.DataLabel{m}(testtag{m}==1&dataobj.DataLabel{m}~=dataobj.UnlabelTag),PredictionLabel(dataobj.DataLabel{m}(testtag{m}==1)~=dataobj.UnlabelTag));
-                    result{j,i}=copy(evalarray{j});
+                    result{j,i}=evalarray{j}.Run(truedata,predictiondata);
                 end
             end
             for j=1:length(evalarray)

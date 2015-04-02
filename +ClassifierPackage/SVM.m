@@ -11,9 +11,8 @@ classdef  SVM < ClassifierPackage.Classifier
            obj=obj@ClassifierPackage.Classifier(ClassifyName);
       end
       
-      function PredictionLabel=Run(obj,dataobj,TrainTag,TestTag)
+      function PredictionLabel=Run(obj,dataobj,TrainTag,TestTag,m)
           %%m表示要对第m类节点类型作为目标节点进行分类
-          m=dataobj.TargetDataSet;
           trainlabel=dataobj.DataLabel{m}(TrainTag{m},:);
           testlabel=dataobj.DataLabel{m}(TestTag{m},:);
           trainfeature=dataobj.DataFeature{m}(TrainTag{m},:);
