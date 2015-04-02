@@ -6,12 +6,13 @@ classdef Classifier < handle
     
    methods   
       function obj = Classifier(ClassifyName)
+%           obj=eval([ClassifyName,'(''',ClassifyName,''')']);
           obj.ClassifyName=ClassifyName;
       end
    end
    
    methods(Abstract)
-      PredictionLabel=Run(obj,dataobj,TrainTag,TestTag,m); 
+      PredictionLabel=Run(obj,dataobj,TrainTag,TestTag); 
    end
    
 end

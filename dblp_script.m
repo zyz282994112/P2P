@@ -1,13 +1,13 @@
 clear
-% DataClean_dblp;%%将数据转为向量（or关联矩阵）存入DataLabel和DataMatrix中，同时去除所有孤立点
-
 import ClassifierPackage.*;
 import EvaluationPackage.*;
-import ValidatePackage.
+import ValidatePackage.*;
+import DataCleanPackage.*;
 
-dataset=DataSet('dblp');
+DataClean_dblp;%%将数据转为向量（or关联矩阵）存入DataLabel和DataMatrix中，同时去除所有孤立点
+
+dataset=DataSet('dblp',2);
 num=4;
-m=2;
 
 classify=GNetMine('GNetMine');
 classify.lamada=ones(num,num)*0.2;
@@ -18,10 +18,8 @@ exper=HoldoutValidateModel('HoldoutValidateModel');
 exper.lamada=[0.005,0.005,0,0];
 % exper=CrossValidateModel('CrossValidateModel');
 
-exper.UnlabelDataTag=0;
-
 evalall={eval,eval2};
-evalall=exper.Run(dataset,classify,evalall,1);
+exper.Run(dataset,classify,evalall);
 
 result={dataset,classify,exper,evalall};
 % exper.WriteMode='a';
