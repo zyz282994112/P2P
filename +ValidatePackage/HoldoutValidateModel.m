@@ -7,7 +7,8 @@ classdef HoldoutValidateModel < ValidatePackage.ValidateModel
             obj=obj@ValidatePackage.ValidateModel(ValidateName);
         end
         
-        function evalarray=Run(obj,dataobj,classify,evalarray,m)
+        function evalarray=Run(obj,dataobj,classify,evalarray)
+            m=dataobj.TargetDataSet;
             traintag=cell(length(dataobj.DataLabel),1);
             testtag=cell(length(dataobj.DataLabel),1);
             if isempty(obj.lamada)
@@ -25,10 +26,12 @@ classdef HoldoutValidateModel < ValidatePackage.ValidateModel
                         [traintag{i},testtag{i}] = crossvalind('HoldOut',dataobj.DataLabel{i},1-obj.lamada(i));
                 end
             end
-            PredictionLabel=classify.Run(dataobj,traintag,testtag,m);
-            [truedata,predictiondata]=obj.ClearuUnlabeldData(dataobj.DataLabel{m}(testtag{m}==1),PredictionLabel);
+            PredictionLabel=classify.Run(dataobj,traintag,testtag);
+%             [truedata,predictiondata]=obj.ClearUnlabeldData(dataobj.DataLabel{m}(testtag{m}==1),PredictionLabel);
+            
             for i=1:length(evalarray)
-                evalarray{i}=evalarray{i}.Run(truedata,predictiondata);
+%                 evalarray{i}.Run(truedata,predictiondata);
+                evalarray{i}.Run(dataobj.DataLabel{m}(testtag{m}==1&dataobj.DataLabel{m}~=dataobj.UnlabelTag),PredictionLabel(dataobj.DataLabel{m}(testtag{m}==1)~=dataobj.UnlabelTag));
             end
         end
         

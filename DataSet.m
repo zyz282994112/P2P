@@ -1,25 +1,31 @@
 classdef DataSet < handle
     %load dataset
-    properties  
+    properties
         DatasetName;
+        TargetDataSet=1;
+        UnlabelTag=NaN;
     end
-    properties(Hidden) 
-        DataLabel;   
+    properties(Hidden)
+        DataLabel;
         DataFeature;
         DataMatrix;
+        Unbalanceweight;
     end
     
-    methods   
-        function obj=DataSet(DatasetName)
-            if ~exist(DatasetName,'file')
-                disp('No such dataset!')
-                return
-            end            
+    methods
+        function obj=DataSet(DatasetName,TargetDataSet)
+            if ~exist([DatasetName,'.mat'],'file')
+                error('No such dataset!');
+            end
             obj.DatasetName=DatasetName;
-            tmp=load(DatasetName);  
-            obj.DataLabel=tmp.DataLabel;    
-            obj.DataFeature=tmp.DataFeature;
-            obj.DataMatrix=tmp.DataMatrix;
+            data=load(DatasetName);
+            tmp=fieldnames(data);
+            for i=1:length(tmp)
+                obj.(tmp{i})=data.(tmp{i});
+            end
+            if nargin==2
+                obj.TargetDataSet=TargetDataSet;
+            end
         end
     end
 end

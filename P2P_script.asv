@@ -1,0 +1,49 @@
+clear
+import ClassifierPackage.*;
+import EvaluationPackage.*;
+import ValidatePackage.*;
+import DataCleanPackage.*;
+
+DataClean_P2P;%%将数据转为向量（or关联矩阵）存入DataLabel和DataMatrix中，同时去除所有孤立点
+
+
+dataset=DataSet('dblp',2);
+num=4;
+
+classify=GNetMine('GNetMine');
+classify.lamada=ones(num,num)*0.2;
+classify.afa=ones(num,1)*0.1;
+eval=PrecisionRecallEvaluation('precision');
+eval2=AUCEvaluation('auc');
+exper=HoldoutValidateModel('HoldoutValidateModel');
+exper.lamada=[0.005,0.005,0,0];
+% exper=CrossValidateModel('CrossValidateModel');
+
+evalall={eval,eval2};
+exper.Run(dataset,classify,evalall);
+
+result={dataset,classify,exper,evalall};
+% exper.WriteMode='a';
+exper.SaveResult(result);
+
+DataCleanScript;
+
+fenleiqi=Propogation_Graph(DataLabel,DataFeature,DataMatrix);
+fenleiqi.lamada=ones(3,3)*0.5;
+fenleiqi.afa=ones(3,1)*0.5;
+exper=Experiment_Design(DataLabel,DataFeature,DataMatrix);
+[truelabel,predictionlabel]=exper.crossValidateModel(fenleiqi,10);
+eval=Evaluation(truelabel,predictionlabel);
+eval.ComputeConfusionMatrix();
+eval.precision_recall();
+
+
+
+
+disp('十折交叉结果：');
+tmp=sprintf('坏账准确率：%g;坏账召回率：%g。',eval.precision(1),eval.recall(1));
+disp(tmp);
+[X Y T AUC]=perfcurve(truelabel,predictionlabel,1);
+tmp=sprintf('坏账AUC：%g。',AUC);
+disp(tmp);
+
