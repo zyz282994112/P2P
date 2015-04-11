@@ -3,7 +3,6 @@ classdef ValidateModel < handle
     properties
         ValidateName;
         WriteMode='w';
-%         UnlabelDataTag=NaN;
     end
     methods
         function obj=ValidateModel(ValidateName)
@@ -54,13 +53,20 @@ for i=1:length(objclass)
             for k1=1:size(tmp,1)
                 for k2=1:size(tmp,2)
 %                     disp([objclass(i).Name,'(',num2str(k1),',',num2str(k2),') : ',num2str(tmp(k1,k2))]);
-                    fprintf(c,'<%s(%d,%d)>%s</%s(%d,%d)>\n',objclass(i).Name,k1,k2,num2str(tmp(k1,k2)),objclass(i).Name,k1,k2);
+                    fprintf(c,'<%s_%d_%d>%s</%s_%d_%d>\n',objclass(i).Name,k1,k2,num2str(tmp(k1,k2)),objclass(i).Name,k1,k2);
                 end
             end
             fprintf(c,'</%s>\n',objclass(i).Name);
         else        
 %             disp([objclass(i).Name,' : ',num2str(obj.(objclass(i).Name))]);
-            fprintf(c,'<%s>%s</%s>\n',objclass(i).Name,num2str(obj.(objclass(i).Name)),objclass(i).Name);
+            if iscell(obj.(objclass(i).Name))
+                [tag1,tag2]=size(obj.(objclass(i).Name));
+                for kk=1:(tag1*tag2)
+                    fprintf(c,'<%s_%s>%s</%s_%s>\n',objclass(i).Name,num2str(kk),num2str(obj.(objclass(i).Name){kk}),objclass(i).Name,num2str(kk));
+                end
+            else
+                fprintf(c,'<%s>%s</%s>\n',objclass(i).Name,num2str(obj.(objclass(i).Name)),objclass(i).Name);
+            end
         end
     end
 end

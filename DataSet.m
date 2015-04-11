@@ -3,13 +3,13 @@ classdef DataSet < handle
     properties
         DatasetName;
         TargetDataSet=1;
-        UnlabelTag=NaN;
+        UnlabelTag;
+        ComputeLabel;
     end
     properties(Hidden)
         DataLabel;
         DataFeature;
         DataMatrix;
-        Unbalanceweight;
     end
     
     methods

@@ -2,7 +2,8 @@ classdef  GNetMine < ClassifierPackage.Classifier
     properties
         lamada;
         afa;
-        solution=2;
+        solution=2;   
+        Unbalanceweight;
     end
     
     methods(Static,Access=private)
@@ -16,7 +17,7 @@ classdef  GNetMine < ClassifierPackage.Classifier
             obj=obj@ClassifierPackage.Classifier(ClassifyName);
         end
         
-        function PredictionLabel=Run(obj,dataobj,TrainTag,TestTag)
+        function [PredictionLabel,score]=Run(obj,dataobj,TrainTag,TestTag)
             m=dataobj.TargetDataSet;
             %%m表示要对第m类节点类型作为目标节点进行分类
             num=length(TrainTag);
@@ -31,7 +32,7 @@ classdef  GNetMine < ClassifierPackage.Classifier
                     end
                 end
             end
-            inputLabel=cell(num,1);
+            inputLabel=cell(num,1);%%去掉，变成一个临时的
             y=cell(num,1);
             classlabel=unique(dataobj.DataLabel{m}(dataobj.DataLabel{m}~=dataobj.UnlabelTag));
             for i=1:num
@@ -39,10 +40,10 @@ classdef  GNetMine < ClassifierPackage.Classifier
                 inputLabel{i}(TrainTag{i}==1)=dataobj.DataLabel{i}(TrainTag{i}==1);
                 y{i}=zeros(length(inputLabel{i}),length(classlabel));
                 for j=1:length(classlabel)
-                    if isempty(dataobj.Unbalanceweight)
+                    if isempty(obj.Unbalanceweight)
                         y{i}(inputLabel{i}==classlabel(j),j)=1;
                     else
-                        y{i}(inputLabel{i}==classlabel(j),j)=cell2mat(dataobj.Unbalanceweight(cell2mat(dataobj.Unbalanceweight(:,1))==classlabel(j),2));
+                        y{i}(inputLabel{i}==classlabel(j),j)=cell2mat(obj.Unbalanceweight(cell2mat(obj.Unbalanceweight(:,1))==classlabel(j),2));
                     end
                 end
             end
@@ -57,16 +58,19 @@ classdef  GNetMine < ClassifierPackage.Classifier
             else
                 f=obj.IterationSolution(S,y,obj.lamada,obj.afa);%%答案与闭式解结果相同
             end
-            PredictionLabel=zeros(length(dataobj.DataLabel{m}),1);
-            for i=1:length(PredictionLabel)
-                if all(f{m}(i,:)'==0)
-                    PredictionLabel(i)=dataobj.UnlabelTag;
-                else
-                    [~,tag]=max(f{m}(i,:));
-                    PredictionLabel(i)=classlabel(tag);
-                end
-            end
+            
+            [~,PredictionLabel]=max(f{m}');
+            PredictionLabel=classlabel(PredictionLabel');
+            PredictionLabel(all(f{m}'==0)')=dataobj.UnlabelTag;
             PredictionLabel=PredictionLabel(TestTag{m}==1);
+            
+            if strcmp(num2str(classlabel(1)),dataobj.ComputeLabel)
+%                 score=f{m}(TestTag{m}==1,1);
+                score=f{m}(TestTag{m}==1,1)-f{m}(TestTag{m}==1,2);%%使用差异度计算
+            else
+%                 score=f{m}(TestTag{m}==1,2);
+                score=f{m}(TestTag{m}==1,2)-f{m}(TestTag{m}==1,1);%%使用差异度计算
+            end
         end
         
     end

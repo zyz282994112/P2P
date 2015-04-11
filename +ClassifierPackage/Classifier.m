@@ -12,7 +12,7 @@ classdef Classifier < handle
    end
    
    methods(Abstract)
-      PredictionLabel=Run(obj,dataobj,TrainTag,TestTag); 
+      [PredictionLabel,score]=Run(obj,dataobj,TrainTag,TestTag); 
    end
    
 end

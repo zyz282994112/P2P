@@ -11,7 +11,7 @@ classdef Evaluation < handle&matlab.mixin.Copyable
     end
     
     methods(Abstract)
-       obj=Run(obj,truevector,precisionvector); 
+       obj=Run(obj,dataobj,truevector,precisionvector,varargin); 
     end
     
 end

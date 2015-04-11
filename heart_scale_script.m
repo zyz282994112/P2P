@@ -6,16 +6,16 @@ import ValidatePackage.*;
 % DataClean_heart_scale;
 
 %%load dataset
-dataset=DataSet('heart_scale',1);
+dataset=DataSet('P2P_feature',1);
 
 %%≥Ã–Ú‘À––
 
-classify=SVM('SVM');
+classify=SVM('LogisticRegression');
 eval=PrecisionRecallEvaluation('prediction');
+eval.IsAve=0;
 eval2=AUCEvaluation('auc');
 exper=HoldoutValidateModel('HoldoutValidateModel');
 % exper=CrossValidateModel('CrossValidateModel');
-% exper.UnlabelDataTag=0;
 
 
 % exper.lamada=0.3;

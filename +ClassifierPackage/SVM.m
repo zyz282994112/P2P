@@ -3,7 +3,7 @@ classdef  SVM < ClassifierPackage.Classifier
         s=0;
         t=2;
         c=1;
-        g=0.07;
+        g=0;
     end
     
    methods   %定义类方法
@@ -11,15 +11,16 @@ classdef  SVM < ClassifierPackage.Classifier
            obj=obj@ClassifierPackage.Classifier(ClassifyName);
       end
       
-      function PredictionLabel=Run(obj,dataobj,TrainTag,TestTag)
+      function [PredictionLabel,score]=Run(obj,dataobj,TrainTag,TestTag)
           %%m表示要对第m类节点类型作为目标节点进行分类
           m=dataobj.TargetDataSet;
           trainlabel=dataobj.DataLabel{m}(TrainTag{m},:);
           testlabel=dataobj.DataLabel{m}(TestTag{m},:);
           trainfeature=dataobj.DataFeature{m}(TrainTag{m},:);
           testfeature=dataobj.DataFeature{m}(TestTag{m},:);
+          
           model = svmtrain(trainlabel, trainfeature,['-c ',num2str(obj.c),' -s ',num2str(obj.s),' -t ',num2str(obj.t),' -g ',num2str(obj.g)]);
-          PredictionLabel = svmpredict(testlabel,testfeature,model);        
+          [PredictionLabel,~,score] = svmpredict(testlabel,testfeature,model);
       end
             
    end

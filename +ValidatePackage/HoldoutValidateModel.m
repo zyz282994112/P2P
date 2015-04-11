@@ -26,12 +26,12 @@ classdef HoldoutValidateModel < ValidatePackage.ValidateModel
                         [traintag{i},testtag{i}] = crossvalind('HoldOut',dataobj.DataLabel{i},1-obj.lamada(i));
                 end
             end
-            PredictionLabel=classify.Run(dataobj,traintag,testtag);
+            [PredictionLabel,score]=classify.Run(dataobj,traintag,testtag);
 %             [truedata,predictiondata]=obj.ClearUnlabeldData(dataobj.DataLabel{m}(testtag{m}==1),PredictionLabel);
             
             for i=1:length(evalarray)
 %                 evalarray{i}.Run(truedata,predictiondata);
-                evalarray{i}.Run(dataobj.DataLabel{m}(testtag{m}==1&dataobj.DataLabel{m}~=dataobj.UnlabelTag),PredictionLabel(dataobj.DataLabel{m}(testtag{m}==1)~=dataobj.UnlabelTag));
+                evalarray{i}.Run(dataobj,dataobj.DataLabel{m}(testtag{m}==1&dataobj.DataLabel{m}~=dataobj.UnlabelTag),PredictionLabel(dataobj.DataLabel{m}(testtag{m}==1)~=dataobj.UnlabelTag),score(dataobj.DataLabel{m}(testtag{m}==1)~=dataobj.UnlabelTag));
             end
         end
         

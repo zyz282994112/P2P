@@ -13,10 +13,13 @@ for t=1:3000
         end
     end
     if isequal(oldf,f)
-        disp('循环终止时迭代次数：');
-        disp(t);
+%         disp('循环终止时迭代次数：');
+%         disp(t);
         break;
     end
+end
+if t==3000
+    disp('超出迭代次数！');
 end
 
 end

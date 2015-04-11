@@ -20,11 +20,9 @@ classdef CrossValidateModel < ValidatePackage.ValidateModel
                 for j=1:length(indices)
                     testtag{j} = (indices{j} == i); traintag{j} = ~testtag{j};
                 end
-                PredictionLabel=classify.Run(dataobj,traintag,testtag);
-                %                 [truedata,predictiondata]=obj.ClearUnlabeldData(dataobj.DataLabel{m}(testtag{m}==1),PredictionLabel);
+                [PredictionLabel,score]=classify.Run(dataobj,traintag,testtag);
                 for j=1:length(evalarray)
-                    %                     result{j,i}=evalarray{j}.Run(truedata,predictiondata);
-                    evalarray{j}.Run(dataobj.DataLabel{m}(testtag{m}==1&dataobj.DataLabel{m}~=dataobj.UnlabelTag),PredictionLabel(dataobj.DataLabel{m}(testtag{m}==1)~=dataobj.UnlabelTag));
+                    evalarray{j}.Run(dataobj,dataobj.DataLabel{m}(testtag{m}==1&dataobj.DataLabel{m}~=dataobj.UnlabelTag),PredictionLabel(dataobj.DataLabel{m}(testtag{m}==1)~=dataobj.UnlabelTag),score(dataobj.DataLabel{m}(testtag{m}==1)~=dataobj.UnlabelTag));
                     result{j,i}=copy(evalarray{j});
                 end
             end

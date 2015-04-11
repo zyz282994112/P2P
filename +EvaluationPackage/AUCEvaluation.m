@@ -9,17 +9,8 @@ classdef AUCEvaluation < EvaluationPackage.Evaluation
             obj=obj@EvaluationPackage.Evaluation(EvaluationName);
         end
         
-        function obj=Run(obj,truedata,predictiondata)
-            ClassLabel=unique(truedata);
-            everyauc=zeros(size(ClassLabel));
-            obj.AUC=0;
-            for i=1:length(ClassLabel)
-                [~,~,~,everyauc(i)]=perfcurve(truedata,predictiondata,ClassLabel(i));
-%                 everyauc(i)
-                obj.AUC=obj.AUC+everyauc(i)*sum(truedata==ClassLabel(i));
-            end
-            obj.AUC=obj.AUC/length(truedata);
-                
+        function obj=Run(obj,dataobj,truedata,~,score)
+            [~,~,~,obj.AUC]=perfcurve(truedata,score,dataobj.ComputeLabel);
         end
     end
     
