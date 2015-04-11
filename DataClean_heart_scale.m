@@ -5,6 +5,6 @@ DataLabel=cell(1,1);
 DataFeature=cell(1,1);
 DataMatrix=cell(1,1);
 
-[DataLabel{1}, DataFeature{1}] = libsvmread('heart_scale');
+[DataLabel{1}, DataFeature{1}] = libsvmread('P2P_feature.libsvm');
 
-save('heart_scale');
+save('P2P_feature.mat');
